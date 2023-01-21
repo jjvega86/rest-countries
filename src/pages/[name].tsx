@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Link from "next/link";
-import Image from "next/image";
 import { FaArrowCircleLeft } from "react-icons/fa";
+import CountryPill from "@/components/CountryPill";
 
 export default function Detail({ country }: any) {
   return (
@@ -23,52 +23,67 @@ export default function Detail({ country }: any) {
         </Link>
         <div className="mt-16 flex flex-row gap-16">
           <img
-            width={520}
+            width={420}
+            height={360}
             src={country.flags.png}
             alt={`${country.name.common}`}
           />
           <div className="p-6">
-            <h2 className="text-3xl font-bold">{country.name.common}</h2>
-            <p>
-              <span className="font-bold mr-3">Native Name:</span>
-              {country.name.official}
-            </p>
-            <p>
-              <span className="font-bold mr-3">Population:</span>
-              {country.population}
-            </p>
-            <p>
-              <span className="font-bold mr-3">Region</span>
-              {country.region}
-            </p>
-            <p>
-              <span className="font-bold mr-3">Sub Region:</span>
-              {country.subregion}
-            </p>
-            <p>
-              <span className="font-bold mr-3">Capital:</span>
-              {country.capital}
-            </p>
-            <p>
-              <span className="font-bold mr-3">Top Level Domain</span>
-              {country.tld}
-            </p>
-            <p>
-              <span className="font-bold mr-3">Currencies:</span>
-              {country.currencies ? (
-                Object.keys(country.currencies).map((currency) => (
-                  <p className="inline">{currency}</p>
-                ))
-              ) : (
-                <p className="inline">None</p>
-              )}
-            </p>
-            <p>
-              <span className="font-bold mr-3">Languages:</span>
-              {Object.keys(country.languages).map((language) => (
-                <p className="inline">{country.languages[language]} </p>
-              ))}
-            </p>
+            <h2 className="text-3xl font-bold mb-8">{country.name.common}</h2>
+            <div className="flex flex-row gap-16">
+              <div>
+                <p>
+                  <span className="font-bold mr-3">Native Name:</span>
+                  {country.name.official}
+                </p>
+                <p>
+                  <span className="font-bold mr-3">Population:</span>
+                  {country.population}
+                </p>
+                <p>
+                  <span className="font-bold mr-3">Region</span>
+                  {country.region}
+                </p>
+                <p>
+                  <span className="font-bold mr-3">Sub Region:</span>
+                  {country.subregion}
+                </p>
+                <p>
+                  <span className="font-bold mr-3">Capital:</span>
+                  {country.capital}
+                </p>
+              </div>
+              <div>
+                <p>
+                  <span className="font-bold mr-3">Top Level Domain</span>
+                  {country.tld}
+                </p>
+                <p>
+                  <span className="font-bold mr-3">Currencies:</span>
+                  {country.currencies ? (
+                    Object.keys(country.currencies).map((currency) => (
+                      <p className="inline">{currency}</p>
+                    ))
+                  ) : (
+                    <p className="inline">None</p>
+                  )}
+                </p>
+                <p>
+                  <span className="font-bold mr-3">Languages:</span>
+                  {Object.keys(country.languages).map((language) => (
+                    <p className="inline">{country.languages[language]} </p>
+                  ))}
+                </p>
+              </div>
+            </div>
+            {country.borders && (
+              <div className="mt-14">
+                <p className="font-bold mr-3">Border Countries: </p>
+                {country.borders.map((country: any) => (
+                  <CountryPill key={country} countryCode={country} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -81,6 +96,5 @@ export async function getServerSideProps(context: any) {
     `https://restcountries.com/v3.1/name/${context.query.name}`
   );
   const [country] = await res.json();
-  console.log(country);
   return { props: { country } };
 }
