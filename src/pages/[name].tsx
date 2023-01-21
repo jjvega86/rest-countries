@@ -1,8 +1,9 @@
 import Head from "next/head";
 import Link from "next/link";
+import Image from "next/image";
+import { FaArrowCircleLeft } from "react-icons/fa";
 
-export default function Detail({ data }: any) {
-  console.log(data);
+export default function Detail({ country }: any) {
   return (
     <>
       <Head>
@@ -11,11 +12,65 @@ export default function Detail({ data }: any) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section className="grid place-content-center">
-        <h1 className="mt-5">Current Country: {data.name?.common}</h1>
+      <section className="mx-16 mt-8">
         <Link href={`/`}>
-          <button>⬅️ Go Back</button>
+          <button className="shadow-lg px-5 py-2 rounded-lg hover:shadow-xl flex gap-2 items-center">
+            <span>
+              <FaArrowCircleLeft />
+            </span>
+            Back
+          </button>
         </Link>
+        <div className="mt-16 flex flex-row gap-16">
+          <img
+            width={520}
+            src={country.flags.png}
+            alt={`${country.name.common}`}
+          />
+          <div className="p-6">
+            <h2 className="text-3xl font-bold">{country.name.common}</h2>
+            <p>
+              <span className="font-bold mr-3">Native Name:</span>
+              {country.name.official}
+            </p>
+            <p>
+              <span className="font-bold mr-3">Population:</span>
+              {country.population}
+            </p>
+            <p>
+              <span className="font-bold mr-3">Region</span>
+              {country.region}
+            </p>
+            <p>
+              <span className="font-bold mr-3">Sub Region:</span>
+              {country.subregion}
+            </p>
+            <p>
+              <span className="font-bold mr-3">Capital:</span>
+              {country.capital}
+            </p>
+            <p>
+              <span className="font-bold mr-3">Top Level Domain</span>
+              {country.tld}
+            </p>
+            <p>
+              <span className="font-bold mr-3">Currencies:</span>
+              {country.currencies ? (
+                Object.keys(country.currencies).map((currency) => (
+                  <p className="inline">{currency}</p>
+                ))
+              ) : (
+                <p className="inline">None</p>
+              )}
+            </p>
+            <p>
+              <span className="font-bold mr-3">Languages:</span>
+              {Object.keys(country.languages).map((language) => (
+                <p className="inline">{country.languages[language]} </p>
+              ))}
+            </p>
+          </div>
+        </div>
       </section>
     </>
   );
@@ -25,6 +80,7 @@ export async function getServerSideProps(context: any) {
   const res = await fetch(
     `https://restcountries.com/v3.1/name/${context.query.name}`
   );
-  const [data] = await res.json();
-  return { props: { data } };
+  const [country] = await res.json();
+  console.log(country);
+  return { props: { country } };
 }
