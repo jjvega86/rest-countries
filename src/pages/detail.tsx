@@ -6,7 +6,7 @@ const nunito_sans = Nunito_Sans({
   subsets: ["latin"],
 });
 
-export default function Home() {
+export default function Detail() {
   return (
     <>
       <Head>
@@ -16,7 +16,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={nunito_sans.className}>
-        <h1 className="mt-5">HOME</h1>
+        <h1 className="mt-5">DETAIL</h1>
       </main>
     </>
   );
