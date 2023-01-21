@@ -1,6 +1,12 @@
 import Head from "next/head";
+import {
+  ReactElement,
+  JSXElementConstructor,
+  ReactFragment,
+  ReactPortal,
+} from "react";
 
-export default function Home() {
+export default function Home({ data }: any) {
   return (
     <>
       <Head>
@@ -9,9 +15,20 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section>
-        <h1 className="mt-5">HOME</h1>
+      <section className="mx-10">
+        <p className="mt-5">TODO: INPUT FOR SEARCH HERE</p>
+        <p className="mt-5">TODO: Filter by Region</p>
+        {data.map((country: { name: { common: string } }) => (
+          <p key={country.name.common}>{country.name.common}</p>
+        ))}
       </section>
     </>
   );
+}
+
+export async function getServerSideProps() {
+  const res = await fetch("https://restcountries.com/v3.1/all");
+  const data = await res.json();
+
+  return { props: { data } };
 }

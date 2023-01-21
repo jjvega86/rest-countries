@@ -12,7 +12,9 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       <Header />
-      <main className={nunito_sans.className}>
+      <main
+        className={`${nunito_sans.className} mx-auto min-h-screen scroll-smooth`}
+      >
         <Component {...pageProps} />
       </main>
     </>
