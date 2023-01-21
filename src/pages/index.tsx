@@ -1,6 +1,6 @@
 import Head from "next/head";
 import CountryCard from "@/components/CountryCard";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface Country {
   name: { common: string };
@@ -12,6 +12,19 @@ interface Country {
 
 export default function Home({ data }: any) {
   const [countries, setCountries] = useState(data);
+  const [search, setSearch] = useState("");
+
+  const searchCountries = () => {
+    const searchedCountries = data.filter((country: Country) =>
+      country.name.common.toLocaleLowerCase().includes(search)
+    );
+    setCountries(searchedCountries);
+  };
+
+  useEffect(() => {
+    searchCountries();
+  }, [search]);
+
   return (
     <>
       <Head>
@@ -22,10 +35,16 @@ export default function Home({ data }: any) {
       </Head>
       <section className="mx-10">
         <div className="flex justify-between mb-6">
-          <p className="mt-5">TODO: INPUT FOR SEARCH HERE</p>
+          <input
+            className="mt-5 border-solid border-2"
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <p>{search}</p>
           <p className="mt-5">TODO: Filter by Region</p>
         </div>
-        <div className="grid grid-cols-4 gap-12">
+        <div className="grid place-content-center sm:grid-cols-4 gap-12">
           {countries.map((country: Country) => (
             <CountryCard
               key={country.name.common}
