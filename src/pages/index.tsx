@@ -2,19 +2,13 @@ import Head from "next/head";
 import CountryCard from "@/components/CountryCard";
 import { getUniqueRegions } from "@/util/helpers";
 import { useEffect, useState } from "react";
-
-interface Country {
-  name: { common: string };
-  capital: string;
-  region: string;
-  population: number;
-  flags: { png: string };
-}
+import { Country } from "@/util/types";
+import Link from "next/link";
 
 export default function Home({ data }: any) {
   const [countries, setCountries] = useState(data);
   const [search, setSearch] = useState("");
-  const [currentRegion, setCurrentRegion] = useState("");
+  const [currentRegion, setCurrentRegion] = useState("All Regions");
   const regions = getUniqueRegions(data);
 
   const filterByRegion = () => {
@@ -36,9 +30,11 @@ export default function Home({ data }: any) {
 
   useEffect(() => {
     let currentData = filterByRegion();
+
     const searchedCountries = currentData.filter((country: Country) =>
       country.name.common.toLocaleLowerCase().includes(search)
     );
+
     setCountries(searchedCountries);
   }, [search]);
 
@@ -51,6 +47,7 @@ export default function Home({ data }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="mx-10">
+        {/* // TODO: Refactor search + select into components */}
         <div className="flex justify-between my-6">
           <input
             className="mt-5 border-solid border-2"
@@ -58,23 +55,25 @@ export default function Home({ data }: any) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          <p>{search}</p>
           <select onChange={(e) => setCurrentRegion(e.target.value)}>
             {regions.map((region) => (
-              <option value={region}>{region}</option>
+              <option key={region} value={region}>
+                {region}
+              </option>
             ))}
           </select>
         </div>
         <div className="grid place-content-center sm:grid-cols-4 gap-12">
           {countries.map((country: Country) => (
-            <CountryCard
-              key={country.name.common}
-              name={country.name.common}
-              capital={country.capital}
-              region={country.region}
-              population={country.population}
-              image={country.flags.png}
-            />
+            <Link key={country.name.common} href={`/${country.name.common}`}>
+              <CountryCard
+                name={country.name.common}
+                capital={country.capital}
+                region={country.region}
+                population={country.population}
+                image={country.flags.png}
+              />
+            </Link>
           ))}
         </div>
       </section>

@@ -1,6 +1,10 @@
 import Head from "next/head";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Detail() {
+  const router = useRouter();
+  const { name } = router.query;
   return (
     <>
       <Head>
@@ -9,8 +13,11 @@ export default function Detail() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <section>
-        <h1 className="mt-5">DETAIL</h1>
+      <section className="grid place-content-center">
+        <h1 className="mt-5">Current Country: {name}</h1>
+        <Link href={`/`}>
+          <button>⬅️ Go Back</button>
+        </Link>
       </section>
     </>
   );
