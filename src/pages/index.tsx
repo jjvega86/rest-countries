@@ -14,7 +14,7 @@ export default function Home() {
       </Head>
       <main className={inter.className}>
         <div className="flex items-center justify-center">
-          <h1 className="font-bold text-5xl mt-5">Traveler's Hub</h1>
+          <h1 className="font-bold text-5xl mt-5">Traveler&apos;s Hub</h1>
         </div>
       </main>
     </>
