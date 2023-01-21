@@ -1,5 +1,6 @@
 import Head from "next/head";
 import CountryCard from "@/components/CountryCard";
+import { getUniqueRegions } from "@/util/helpers";
 import { useEffect, useState } from "react";
 
 interface Country {
@@ -13,6 +14,7 @@ interface Country {
 export default function Home({ data }: any) {
   const [countries, setCountries] = useState(data);
   const [search, setSearch] = useState("");
+  const regions = getUniqueRegions(data);
 
   const searchCountries = () => {
     const searchedCountries = data.filter((country: Country) =>
@@ -43,6 +45,7 @@ export default function Home({ data }: any) {
           />
           <p>{search}</p>
           <p className="mt-5">TODO: Filter by Region</p>
+          <select></select>
         </div>
         <div className="grid place-content-center sm:grid-cols-4 gap-12">
           {countries.map((country: Country) => (
