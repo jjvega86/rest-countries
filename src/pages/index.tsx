@@ -14,18 +14,25 @@ interface Country {
 export default function Home({ data }: any) {
   const [countries, setCountries] = useState(data);
   const [search, setSearch] = useState("");
+  const [currentRegion, setCurrentRegion] = useState("");
   const regions = getUniqueRegions(data);
 
-  const searchCountries = () => {
+  useEffect(() => {
     const searchedCountries = data.filter((country: Country) =>
       country.name.common.toLocaleLowerCase().includes(search)
     );
     setCountries(searchedCountries);
-  };
+  }, [search]);
 
   useEffect(() => {
-    searchCountries();
-  }, [search]);
+    if (currentRegion === "All Regions") {
+      setCountries(data);
+    } else {
+      setCountries(
+        data.filter((country: Country) => country.region === currentRegion)
+      );
+    }
+  }, [currentRegion]);
 
   return (
     <>
@@ -36,7 +43,7 @@ export default function Home({ data }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="mx-10">
-        <div className="flex justify-between mb-6">
+        <div className="flex justify-between my-6">
           <input
             className="mt-5 border-solid border-2"
             type="text"
@@ -44,8 +51,11 @@ export default function Home({ data }: any) {
             onChange={(e) => setSearch(e.target.value)}
           />
           <p>{search}</p>
-          <p className="mt-5">TODO: Filter by Region</p>
-          <select></select>
+          <select onChange={(e) => setCurrentRegion(e.target.value)}>
+            {regions.map((region) => (
+              <option value={region}>{region}</option>
+            ))}
+          </select>
         </div>
         <div className="grid place-content-center sm:grid-cols-4 gap-12">
           {countries.map((country: Country) => (
