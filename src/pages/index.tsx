@@ -17,22 +17,30 @@ export default function Home({ data }: any) {
   const [currentRegion, setCurrentRegion] = useState("");
   const regions = getUniqueRegions(data);
 
+  const filterByRegion = () => {
+    let filteredData;
+    if (currentRegion === "All Regions") {
+      filteredData = data;
+    } else {
+      filteredData = data.filter(
+        (country: Country) => country.region === currentRegion
+      );
+    }
+    return filteredData;
+  };
+
   useEffect(() => {
-    const searchedCountries = data.filter((country: Country) =>
+    let currentData = filterByRegion();
+    setCountries(currentData);
+  }, [currentRegion]);
+
+  useEffect(() => {
+    let currentData = filterByRegion();
+    const searchedCountries = currentData.filter((country: Country) =>
       country.name.common.toLocaleLowerCase().includes(search)
     );
     setCountries(searchedCountries);
   }, [search]);
-
-  useEffect(() => {
-    if (currentRegion === "All Regions") {
-      setCountries(data);
-    } else {
-      setCountries(
-        data.filter((country: Country) => country.region === currentRegion)
-      );
-    }
-  }, [currentRegion]);
 
   return (
     <>
