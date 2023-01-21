@@ -1,10 +1,8 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
-export default function Detail() {
-  const router = useRouter();
-  const { name } = router.query;
+export default function Detail({ data }: any) {
+  console.log(data);
   return (
     <>
       <Head>
@@ -14,11 +12,19 @@ export default function Detail() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="grid place-content-center">
-        <h1 className="mt-5">Current Country: {name}</h1>
+        <h1 className="mt-5">Current Country: {data.name?.common}</h1>
         <Link href={`/`}>
           <button>⬅️ Go Back</button>
         </Link>
       </section>
     </>
   );
+}
+
+export async function getServerSideProps(context: any) {
+  const res = await fetch(
+    `https://restcountries.com/v3.1/name/${context.query.name}`
+  );
+  const [data] = await res.json();
+  return { props: { data } };
 }
