@@ -14,18 +14,20 @@ const CountryCard = ({
   capital,
 }: CountryCardProps) => {
   return (
-    <div>
-      <img src={image} alt={name} />
-      <h2>{name}</h2>
-      <p>
-        <span className="font-bold">Population:</span> {population}
-      </p>
-      <p>
-        <span className="font-bold">Region:</span> {region}
-      </p>
-      <p>
-        <span className="font-bold">Capital:</span> {capital}
-      </p>
+    <div className="w-56 shadow-md cursor-pointer">
+      <img className="w-full object-cover h-32" src={image} alt={name} />
+      <div className="pb-7 px-3">
+        <h2 className="font-bold text-lg my-4">{name}</h2>
+        <p>
+          <span className="font-bold">Population:</span> {population}
+        </p>
+        <p>
+          <span className="font-bold">Region:</span> {region}
+        </p>
+        <p>
+          <span className="font-bold">Capital:</span> {capital}
+        </p>
+      </div>
     </div>
   );
 };

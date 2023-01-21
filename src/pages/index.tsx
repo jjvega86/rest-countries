@@ -1,5 +1,6 @@
 import Head from "next/head";
 import CountryCard from "@/components/CountryCard";
+import { useState } from "react";
 
 interface Country {
   name: { common: string };
@@ -10,6 +11,7 @@ interface Country {
 }
 
 export default function Home({ data }: any) {
+  const [countries, setCountries] = useState(data);
   return (
     <>
       <Head>
@@ -23,9 +25,10 @@ export default function Home({ data }: any) {
           <p className="mt-5">TODO: INPUT FOR SEARCH HERE</p>
           <p className="mt-5">TODO: Filter by Region</p>
         </div>
-        <div className="grid grid-cols-4 gap-4">
-          {data.map((country: Country) => (
+        <div className="grid grid-cols-4 gap-12">
+          {countries.map((country: Country) => (
             <CountryCard
+              key={country.name.common}
               name={country.name.common}
               capital={country.capital}
               region={country.region}
