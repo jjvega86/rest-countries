@@ -1,10 +1,13 @@
 import Head from "next/head";
-import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactFragment,
-  ReactPortal,
-} from "react";
+import CountryCard from "@/components/CountryCard";
+
+interface Country {
+  name: { common: string };
+  capital: string;
+  region: string;
+  population: number;
+  flags: { png: string };
+}
 
 export default function Home({ data }: any) {
   return (
@@ -16,11 +19,21 @@ export default function Home({ data }: any) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <section className="mx-10">
-        <p className="mt-5">TODO: INPUT FOR SEARCH HERE</p>
-        <p className="mt-5">TODO: Filter by Region</p>
-        {data.map((country: { name: { common: string } }) => (
-          <p key={country.name.common}>{country.name.common}</p>
-        ))}
+        <div className="flex justify-between mb-6">
+          <p className="mt-5">TODO: INPUT FOR SEARCH HERE</p>
+          <p className="mt-5">TODO: Filter by Region</p>
+        </div>
+        <div className="grid grid-cols-4 gap-4">
+          {data.map((country: Country) => (
+            <CountryCard
+              name={country.name.common}
+              capital={country.capital}
+              region={country.region}
+              population={country.population}
+              image={country.flags.png}
+            />
+          ))}
+        </div>
       </section>
     </>
   );
